@@ -104,5 +104,37 @@ GROUP BY customers.cust_id;
 # 此SELECT语句使用INNER JOIN将customers和orders表互相关联。GROUP BY子句按客户分组数据，因此，函数调用COUNT(orders.order_num)对每个客户的订单计数，将它作为num_ord返回。
 
 
+/*
+LEETCODE SQL 184. 部门工资最高的员工
+Employee 表包含所有员工信息，每个员工有其对应的 Id, salary 和 department Id。
 
++----+-------+--------+--------------+
+| Id | Name  | Salary | DepartmentId |
++----+-------+--------+--------------+
+| 1  | Joe   | 70000  | 1            |
+| 2  | Henry | 80000  | 2            |
+| 3  | Sam   | 60000  | 2            |
+| 4  | Max   | 90000  | 1            |
++----+-------+--------+--------------+
+Department 表包含公司所有部门的信息。
 
++----+----------+
+| Id | Name     |
++----+----------+
+| 1  | IT       |
+| 2  | Sales    |
++----+----------+
+编写一个 SQL 查询，找出每个部门工资最高的员工。例如，根据上述给定的表格，Max 在 IT 部门有最高工资，Henry 在 Sales 部门有最高工资。
+
++------------+----------+--------+
+| Department | Employee | Salary |
++------------+----------+--------+
+| IT         | Max      | 90000  |
+| Sales      | Henry    | 80000  |
++------------+----------+--------+
+*/
+SELECT department.name AS 'Department', employee.name AS 'Employee', employee.salary AS 'Salary'
+FROM employee JOIN department ON employee.departmentid = department.id
+WHERE (employee.departmentid, employee.salary) in (SELECT employee.departmentid, MAX(employee.salary)
+                                                   FROM employee 
+                                                   GROUP BY departmentid);

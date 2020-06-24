@@ -167,6 +167,18 @@ SELECT cust_name, cust_contact
 FROM productcustomers
 WHERE prod_id = 'TNT2'
 -- productcustomers是一个视图，作为视图，它不包含表中应该有的任何列或数据，它包含的是一个SQL查询
+
+# 用视图重新格式化检索出的数据
+CREATE VIEW vendorlocations AS
+SELECT Concat(Rtrim(vend_name), '(', Rtrim(vend_country), ')')
+       AS vend_title
+FROM vendors
+ORDER BY vend_name;
+-- 假如经常需要这个格式的结果。不必在每次需要时执行联结，创建一个视图，每次需要时使用它即可。
+-- 如果需要检索出以创建所有邮件标签的数据
+SELECT *
+FROM vendorlocations;
+
 # 为什么使用视图
 -- 1.重用SQL语句。
 -- 2.简化复杂的SQL操作。在编写查询后，可以方便地重用它而不必知道它的基本查询细节。
